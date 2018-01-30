@@ -86,22 +86,22 @@ I think one picture describes more than 1000 words;)
 ## Install Kubernetes
 There are several steps to install a k8s cluster. One compute engine will run as the ``Kubernetes Master`` and the others will run as ``Kubernetes Nodes``, where the actual containers will run.
 
-I decided to use an OS with a GUI for the master so we can plug a monitor and let Kubernetes Dashboard run. If you don't need this you can skip step 1.
+I decided to use an OS with a GUI for the master so we can plug a monitor and let Kubernetes Dashboard run. If you don't need this just download the Node image.
 
 1. ``Download`` ``OS`` for Kubernetes ``Master`` and `Nodes`
 2. ``Install`` ``OS`` on Kubernetes ``Master`` and ``each Node``
 3. ``Install`` Kubernetes on ``Master`` and ``Nodes``using ``kubeadm``
 4. Check installation
 
-##### Step 1: Download OS for Kubernetes
+### Step 1: Download OS for Kubernetes
 > Download script can be found here: https://github.com/rilleralle/k8s/blob/master/1-k8s-download.sh
-###### Master - Xubuntu Xenial Mate
+#### Master - Xubuntu Xenial Mate
 Go to [http://wiki.pine64.org/index.php/Pine\_A64\_Software_Release](http://wiki.pine64.org/index.php/Pine_A64_Software_Release#Ubuntu_Desktop_Image_.5B20161215.5D_built_by_Pine64) `Ubuntu Desktop Image [20161215] built by Pine64` and download the `DD image (for 8GB micoSD card and above)` [Direct download from pine64.org](http://files.pine64.org/os/ubuntu/xubuntu-xenial-mate-20161215-longsleep-pine64-8GB.img.gz). If this link does not work please go to the Pine64 website.
 
-###### Node - Xenial Base Image
+#### Node - Xenial Base Image
 Go to [http://wiki.pine64.org/index.php/Pine\_A64\_Software_Release](http://wiki.pine64.org/index.php/Pine_A64_Software_Release#Xenial_Base_Image_.5B20161218-1.5D_by_longsleep) `Xenial Base Image [20161218-1] by longsleep` and download the `DD image (for 8GB micoSD card and above)` [Direct download from pine64.org](http://files.pine64.org/os/ubuntu/xenial-pine64-bspkernel-20161218-1.img.xz). `Please extract the compressed file`. If this link does not work please go to the Pine64 website.
 
-##### Step 2: Install OS on Master and Nodes using a Mac
+### Step 2: Install OS on Master and Nodes using a Mac
 I don't want any credits for the manual of how to install an image on an SD card using a Mac. I just copied the statements from the Raspberry Pi guys. They wrote an awesome howto! You can find it here:
 https://www.raspberrypi.org/documentation/installation/installing-images/mac.md. You will also find howtos for Linux or Windows.
 
@@ -161,20 +161,23 @@ Disk /dev/rdisk2 ejected
 
 Et voila, that was the SD card for the master. Please repeat for the other SD cards and use the correct image `xenial-pine64-bspkernel-20161218-1.img`. 
 
-##### Configuration
+#### Configuration
 The credentials for both images are
 
 * username: ubuntu
 * password: ubuntu
 
-###### Setup network
-**Change the hostname**
+##### Become root
 ```
-$hostnamectl set-hostname 'new-hostname'
+$ sudo su
+```
+##### Change the hostname
+```
+$ hostnamectl set-hostname 'new-hostname'
 ```
 Be creative!
 
-**Setup static ip addresses**
+##### Setup static ip addresses
 
 Kubernetes requires static ip addresses for master and nodes because the cluster does not work if the ip address changes after the installation.
 
@@ -182,7 +185,7 @@ You can bind a static ip address to an interface. All pines are connected via et
 
 Add the following lines to `/etc/network/interfaces`:
 ```
-$sudo vi /etc/network/interfaces
+$ vi /etc/network/interfaces
 
 auto eth0:0
 allow-hotplug eth0:0
@@ -192,27 +195,30 @@ iface eth0:0 inet static
 ```
 You can choose any address. I decided to use 192.168.11.1 for master and 192.168.11.2 - 6 for the nodes.
 
-**Disable NetworkManager**
 
+#### (Only for Mate image) Disable NetworkManager
 The NetworkManager is installed on the Ubuntu Mate image, that can cause problems with the static ip address. Disable the NetworkManager.
 ```
-$ sudo systemctl stop NetworkManager.service
-$ sudo systemctl disable NetworkManager.service
+$ systemctl stop NetworkManager.service
+$ systemctl disable NetworkManager.service
 ```
 Check if you can ping the nodes from the master.
 
-###### Disable swap on the nodes
+#### Disable swap on the nodes
 kubeadm join cannot be executed if swap is enabled.
 Disable swap on OS start. Add the following line to /etc/rc.local before the exit 0 line.
 
 ```
-$sudo vi /etc/rc.local
+$ vi /etc/rc.local
 ....
 swapoff -a
 
 exit 0
 ```
-Reboot the server.
+#### Reboot the server
+```
+$ reboot
+```
 
 ##### Step 3: Install Kubernetes on every Pine64 
 The guys from Kubernetes wrote a fantastic step-by-step manual how you install Kubernetes with kubeadm. If you follow my tutorial all you need is to execute the following commands. Please check the website if something is not working. The development of k8s is so fast, that this howto is not up-to-date. https://kubernetes.io/docs/setup/independent/install-kubeadm/
