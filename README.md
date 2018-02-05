@@ -220,7 +220,7 @@ $ reboot
 ```
 
 ## Step 4: Install Kubernetes on every Pine64 
-The guys from Kubernetes wrote a fantastic step-by-step manual how you install Kubernetes with kubeadm. If you follow my tutorial all you need is to execute the following commands. Please check the website if something is not working. The development of k8s is so fast, that this howto is not up-to-date. https://kubernetes.io/docs/setup/independent/install-kubeadm/
+The guys from Kubernetes wrote a fantastic step-by-step manual how you install Kubernetes with kubeadm. If you follow my tutorial all you need is to execute the following commands. Please check the website if something is not working. The development of k8s is so fast, that this howto is maybe not up-to-date. https://kubernetes.io/docs/setup/independent/install-kubeadm/
 
 > Please note, that the following commands from 0. - 3. needs to be executed on the ``master`` and also on ``every node``.
 
