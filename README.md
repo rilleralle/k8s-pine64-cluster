@@ -306,8 +306,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 > It is very important to install a pod network for ARM64! So, this statement downloads the flannel network, replaces the 'normal' amd64 with arm64 and creates the pod.
 
 > VXLAN is not working on the Pine64. So exchange vxlan with udp.
-```
 
+```
 curl -sSL "https://github.com/coreos/flannel/blob/master/Documentation/kube-flannel.yml?raw=true" | sed "s/amd64/arm64/g" | sed "s/vxlan/udp/g" | kubectl create -f -
 ```
 
