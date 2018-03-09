@@ -83,6 +83,7 @@ I bought everything on Amazon and the spacers from Conrad.
 
 # Stick Together
 I think one picture describes more than 1000 words;)
+![Image](image.jpg)
 # Setup OS and Install Kubernetes
 There are several steps to install a k8s cluster. One compute engine will run as the ``Kubernetes Master`` and the others will run as ``Kubernetes Nodes``, where the actual containers will run.
 
